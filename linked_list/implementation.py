@@ -1,4 +1,5 @@
 from .interface import AbstractLinkedList
+from linked_list import Node
 
 
 class LinkedList(AbstractLinkedList):
@@ -7,7 +8,12 @@ class LinkedList(AbstractLinkedList):
     """
 
     def __init__(self, elements=None):
-        pass
+        if elements is not None:
+            self.start=Node(elements)
+            self.end=Node(elements)
+        else:
+            self.start=None
+            self.end=None
 
     def __str__(self):
         pass
@@ -25,6 +31,10 @@ class LinkedList(AbstractLinkedList):
         pass
 
     def __iadd__(self, other):
+        pass
+
+
+    def __ne__(self, other):
         pass
 
     def __eq__(self, other):
