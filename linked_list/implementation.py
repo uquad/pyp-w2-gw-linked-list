@@ -18,7 +18,7 @@ class LinkedList(AbstractLinkedList):
                 self.append(elem)
 
     def __str__(self):
-        if self is None:
+        if self.start is None:
             return "[]"
         else:
             start_str="["
@@ -63,21 +63,33 @@ class LinkedList(AbstractLinkedList):
             
 
     def __add__(self, other):
-        if self is None:
+        if self.start is None:
             return other
-        elif other is None:
+        elif other.start is None:
             return self
             
         newLList=LinkedList()
-        self.end.next=other.start
-        self.end=other.end   
+        aux=self.start
+        while aux.next is not None:
+            newLList.append(aux.elem)
+            aux=aux.next
+        newLList.append(aux.elem)
+        aux=other.start
+        while aux.next is not None:
+            newLList.append(aux.elem)
+            aux=aux.next
+            
+        newLList.append(aux.elem)
         
-        newLList.start=self.start
-        newLList.end=self.end
-        
-        return newLLlist
+        return newLList
 
     def __iadd__(self, other):
+        
+        if self.start is None:
+            return other
+        elif other.start is None:
+            return self
+            
         self.end.next=other.start
         self.end=other.end
         return self
@@ -89,6 +101,7 @@ class LinkedList(AbstractLinkedList):
         
 
     def __eq__(self, other):
+        
         if self.start is None and other.start is not None:
             return False
         elif self.start is not None and other.start is None:
@@ -103,6 +116,8 @@ class LinkedList(AbstractLinkedList):
         
         while firstListNode.next is not None:
             if firstListNode.elem == secondListNode.elem:
+                firstListNode=firstListNode.next
+                secondListNode=secondListNode.next
                 continue
             else:
                 return False
@@ -128,37 +143,48 @@ class LinkedList(AbstractLinkedList):
     def pop(self, index=None):
         
         #if index specified is more than the lenght of the list
-        if index >= len(self):
+        if index >= len(self) or self.start is None:
             raise IndexError
         
         #if no index specified,pop last element
         if index is None:
             aux=self.start
+            
+            #if only one element
+            if aux==self.end:
+                val=self.end.elem
+                self.start=None
+                self.end=None
+                return val
+                
             while aux.next!= self.end:
                 aux=aux.next
             
             val=self.end.elem
             aux.next=None
             self.end=aux
-
+            
+            return val
             
         #pop first element    
         elif index==0:
             val=self.start.elem
             self.start=self.start.next
+            return val
             
         #pop from index location
         else:
-            aux=self.start
+
+            prevNode=self.start
             for i in range(index-1):
-                aux=aux.next
+                prevNode=prevNode.next
                 
-            nodeToPop=aux.next
+            nodeToPop=prevNode.next
             val=nodeToPop.elem
-            aux.next=nodeToPop.next
+            prevNode.next=nodeToPop.next
+            return val
             
             
-        return val
             
             
             
