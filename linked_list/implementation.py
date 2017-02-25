@@ -142,9 +142,9 @@ class LinkedList(AbstractLinkedList):
 
     def pop(self, index=None):
         
-        #if index specified is more than the lenght of the list
-        if index >= len(self) or self.start is None:
+        if self.start is None:
             raise IndexError
+
         
         #if no index specified,pop last element
         if index is None:
@@ -165,6 +165,10 @@ class LinkedList(AbstractLinkedList):
             self.end=aux
             
             return val
+            
+        #if index specified is more than the length of the list
+        elif index >= len(self):
+            raise IndexError
             
         #pop first element    
         elif index==0:
